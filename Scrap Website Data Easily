@@ -1,0 +1,120 @@
+Javascript code to use in Dom
+
+
+	var content = document.querySelectorAll(".lister-item-content");
+	var output = "";
+	for(var i = 0; i<content.length; i++){
+		let nameX = "";
+		let genreX = "";
+		let runTimeX = "";
+		let directorX = "";
+		let ratingX = "";
+		let descX = "";
+		
+		
+		if(content[i].querySelector(".lister-item-header")) {
+			nameX = content[i].querySelector(".lister-item-header").innerText;
+		}
+		
+		if(content[i].getElementsByTagName("p")[0].querySelector(".genre")) {
+			genreX = content[i].getElementsByTagName("p")[0].querySelector(".genre").innerText;
+		}
+		
+		if(content[i].getElementsByTagName("p")[0].querySelector(".runtime")) {
+			runTimeX = content[i].getElementsByTagName("p")[0].querySelector(".runtime").innerText;
+		}
+		
+		if(content[i].getElementsByTagName("p")[2]) {
+			directorX = content[i].getElementsByTagName("p")[2].innerText;
+		}
+		
+		if(content[i].getElementsByTagName("div")[0].getElementsByTagName("div")[0]) {
+			ratingX = content[i].getElementsByTagName("div")[0].getElementsByTagName("div")[0].innerText;
+		}
+		
+		if(content[i].getElementsByTagName("p")[1]) {
+			descX = content[i].getElementsByTagName("p")[1].innerText;
+		}
+		
+	    output +="Name :- " + nameX + "% Genre :- " +  genreX + "% Runtime :-"+ runTimeX + "%" + directorX + "% Rating :- " + ratingX + "% Description :- " + descX + "#";
+	}
+
+
+
+
+
+
+************************************************************************************************************************************************
+
+Excel Macros Code
+
+
+function copyFromIMDB() {
+    //basic Definitions
+
+const sht = SpreadsheetApp.getActive();
+const del = (x,y) =>{
+      if(y===0){
+      sht.getActiveSheet().deleteColumn(sht.getRange(x).getColumn());  
+      } else {
+        sht.getActiveSheet().deleteRow(sht.getRange(x).getRow());  
+      }
+    }
+const cp  = (x,y,z,a) =>  {
+      switch (z) {
+        case 1 : {
+      sht.getRange(x).copyTo(sht.getRange(y), SpreadsheetApp.CopyPasteType.PASTE_VALUES, a);
+        }
+        case 0 : {
+      sht.getRange(x).copyTo(sht.getRange(y),SpreadsheetApp.CopyPasteType.PASTE_NORMAL, a);
+        }
+      }
+    }
+const split = (x,y) =>   sht.getRange(x).splitTextToColumns(y);
+function substitute(x,y) {
+  sht.getRange(x).activate();
+  sht.getCurrentCell().setFormula('='+y);
+}
+  //basic Definitions ends
+
+  
+  split('A1',"#");
+  cp('A1:DD1','A2',0,true);
+  split('A2:A100',"%");
+  del('1:1',1);
+  substitute('G1','SUBSTITUTE(A1,"Name :- ","")');
+  sht.getActiveRange().autoFill(sht.getRange('G1:G100'), SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
+  pasteVal('G:G','A:A');
+  del('G:G',0);
+
+  substitute('G1','SUBSTITUTE(B1,"Genre :- ","")');
+  sht.getActiveRange().autoFill(sht.getRange('G1:G100'), SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
+  pasteVal('G:G','B:B');
+  del('G:G',0);
+
+  substitute('G1','SUBSTITUTE(C1,"Runtime :-","")');
+  sht.getActiveRange().autoFill(sht.getRange('G1:G100'), SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
+  pasteVal('G:G','C:C');
+  del('G:G',0);
+
+  substitute('G1','SUBSTITUTE(D1,"Director: ","")');
+  sht.getActiveRange().autoFill(sht.getRange('G1:G100'), SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
+  pasteVal('G:G','D:D');
+  del('G:G',0);
+
+  substitute('G1','SUBSTITUTE(D1,"Directors: ","")');
+  sht.getActiveRange().autoFill(sht.getRange('G1:G100'), SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
+  pasteVal('G:G','D:D');
+  del('G:G',0);
+
+    substitute('G1','SUBSTITUTE(F1,"Description :- ","")');
+  sht.getActiveRange().autoFill(sht.getRange('G1:G100'), SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
+  pasteVal('G:G','F:F');
+  del('G:G',0);
+
+    substitute('G1','SUBSTITUTE(E1,"Rating :-  ","")');
+  sht.getActiveRange().autoFill(sht.getRange('G1:G100'), SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES);
+  pasteVal('G:G','E:E');
+  del('G:G',0);
+  
+};
