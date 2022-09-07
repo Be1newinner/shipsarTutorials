@@ -1,6 +1,17 @@
-import {createServer} from 'http'
+// Add Express
+import express from "express";
 
-createServer((req,res)=>{
-console.log("logging is here");
-res.end("something is there");
-}).listen(8080);
+// Initialize Express
+const app = express();
+
+// Create GET request
+app.get("/", (req, res) => {
+  res.send("Express on Vercel");
+});
+
+// Initialize server
+app.listen(5000, () => {
+  console.log("Running on port 5000.");
+});
+
+module.exports = app;
