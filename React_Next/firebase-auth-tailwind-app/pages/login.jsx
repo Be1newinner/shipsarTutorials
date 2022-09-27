@@ -1,14 +1,24 @@
 import { useState } from 'react'
 import {EmailSvg, PassSvg} from './Images'
+import {initializeApp} from 'firebase/app'
+import { getDatabase, ref, set } from "firebase/database";
+import firebaseconfig from '../firebaseconfig'
 
 export default function(props) {
+
+  const app = initializeApp(firebaseconfig);
+  const database = getDatabase();
+
+
+  console.log(app);
 
   const [formEmailPassword] = useState({
     email     : "",
     password  : ""
   })
 
-return(<form className="flex flex-col justify-center w-full p-4 h-full lg:w-100">
+return(
+<form className="flex flex-col justify-center w-full p-4 h-full lg:w-100">
 
     <div>
     <span className="text-2xl text-green-500 font-bold">Shipsar.in</span>
@@ -65,6 +75,6 @@ return(<form className="flex flex-col justify-center w-full p-4 h-full lg:w-100"
         </p>
 
       </div>
-    
+  
         </form>)
 } 

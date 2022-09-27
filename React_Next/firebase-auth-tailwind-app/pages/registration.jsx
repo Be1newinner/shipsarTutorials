@@ -1,7 +1,38 @@
 import { useState } from 'react'
 import {EmailSvg, PassSvg, UserSvg} from './Images'
+import firebaseconfig from '../firebaseconfig'
+import {initializeApp} from 'firebase/app'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function(props) {
+  const app = initializeApp(firebaseconfig);
+  const auth = getAuth();
+
+  function registerNow(){
+
+    if(formData['password'] === formData['password2']){
+
+    createUserWithEmailAndPassword(auth, formData['email'], formData['password'])
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      console.log(`success ${JSON.stringify(userCredential)}`)
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorMessage)
+      // ..
+    });
+  
+    } else {
+      alert("password Invalid");
+    }
+  }
+
+
+
   const [formData] = useState({
     name      : "",
     email     : "",
@@ -9,7 +40,10 @@ export default function(props) {
     password2 : ""
   })
     return(
-    <form className="flex flex-col justify-center w-full p-4 h-full lg:w-100">
+    <form onSubmit={e=>{
+      e.preventDefault();
+      registerNow();
+    }} className="flex flex-col justify-center w-full p-4 h-full lg:w-100">
 
 
     <div>
@@ -71,7 +105,7 @@ export default function(props) {
 
   {/* Submit button */}
       <div className="pt-1 mb-4">
-        <button className="bg-green-600 px-5 py-1.5 rounded-lg cursor-pointer hover:bg-green-700">Register Now</button>
+        <button type='submit' className="bg-green-600 px-5 py-1.5 rounded-lg cursor-pointer hover:bg-green-700" >Register Now</button>
       </div>
 
 
