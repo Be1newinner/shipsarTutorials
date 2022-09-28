@@ -18,7 +18,7 @@ export default function(props) {
     <form className="mb-3" >
 
       {/* email */}
-      <label htmlFor="email" className="font-medium text-gray-700">Email ID</label>
+      <label htmlFor="email" className="font-medium text-gray-900">Email ID</label>
         <div className="relative mb-3 rounded-md shadow-sm">
         <div className="rounded-l-md p-3 bg-zinc-300 absolute">
           <EmailSvg />

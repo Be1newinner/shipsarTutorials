@@ -1,24 +1,36 @@
 import { useState } from 'react'
 import {EmailSvg, PassSvg} from './Images'
 import {initializeApp} from 'firebase/app'
-import { getDatabase, ref, set } from "firebase/database";
+// import { getDatabase, ref, set } from "firebase/database";
 import firebaseconfig from '../firebaseconfig'
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function(props) {
-
-  const app = initializeApp(firebaseconfig);
-  const database = getDatabase();
-
-
-  console.log(app);
-
-  const [formEmailPassword] = useState({
+  const [form] = useState({
     email     : "",
     password  : ""
   })
+  const app = initializeApp(firebaseconfig);
+  const auth = getAuth();
+
+  function signIn() {
+  signInWithEmailAndPassword(auth, form['email'], form['password'])
+    .then((userCredential) => {
+      // Signed in 
+      // const user = userCredential.user;
+      console.log(JSON.stringify(userCredential.user));
+      // ...
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+  }
 
 return(
-<form className="flex flex-col justify-center w-full p-4 h-full lg:w-100">
+<form onSubmit={e=>{
+  e.preventDefault();
+  signIn();
+  }} className="flex flex-col justify-center w-full p-4 h-full lg:w-100">
 
     <div>
     <span className="text-2xl text-green-500 font-bold">Shipsar.in</span>
@@ -27,14 +39,14 @@ return(
     
     <div className="mt-6" >
       {/* email */}
-      <label htmlFor="email" className="font-medium text-gray-700">Email ID</label>
+      <label htmlFor="email" className="font-medium text-gray-900">Email ID</label>
         <div className="relative mb-3 rounded-md shadow-sm">
         <div className="rounded-l-md p-3 bg-zinc-300 absolute">
           <EmailSvg />
         </div>
         <input type="email" name="email" 
           onChange={e=>{ 
-            formEmailPassword['email'] = e.target.value
+            form['email'] = e.target.value
           }} 
           id="email" 
           className="block w-full rounded-md border-gray-300 pl-12 py-2 border pr-6 focus:outline-none" 
@@ -42,14 +54,14 @@ return(
       </div>
     
       {/* Password  */}
-      <label htmlFor="password" className="mt-6 font-medium text-gray-700">Password</label>
+      <label htmlFor="password" className="mt-6 font-medium text-gray-900">Password</label>
         <div className="relative mb-3 rounded-md shadow-sm">
         <div className="rounded-l-md p-3 bg-zinc-300 absolute">
           <PassSvg />
         </div>
         <input type="password" name="password" id="password"
           onChange={e=>{ 
-            formEmailPassword['password'] = e.target.value
+            form['password'] = e.target.value
           }}
           className="block w-full rounded-md border-gray-300 pl-12 py-2 border pr-6 focus:outline-none" 
           placeholder="password" required={true} minLength={8} maxLength={21}/>
@@ -62,13 +74,13 @@ return(
     
       <div className="mt-5" >
       
-      <p className="cursor-pointer text-zinc-600 hover:text-green-600"  
+      <p className="cursor-pointer text-zinc-300 hover:text-green-600"  
         onClick={(e)=>{
           props.navigate(2); 
         }}>Reset Password</p>
 
         <p>Don't have an account?  
-        <span className="cursor-pointer text-zinc-600 hover:text-green-600"  
+        <span className="cursor-pointer text-zinc-300 hover:text-green-600"  
         onClick={(e)=>{
           props.navigate(1); 
         }} > Register here</span>

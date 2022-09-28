@@ -54,7 +54,7 @@ export default function(props) {
     <div className="mt-6" >
 
         {/* Name */}
-        <label htmlFor="name" className="font-medium text-gray-700">Name</label>
+        <label htmlFor="name" className="font-medium text-gray-900">Name</label>
         <div className="relative mb-3 rounded-md shadow-sm">
         <div className="rounded-l-md p-3 bg-zinc-300 absolute">
           <UserSvg />
@@ -67,7 +67,7 @@ export default function(props) {
       </div>
       
       {/* email */}
-      <label htmlFor="email" className="font-medium text-gray-700">Email ID</label>
+      <label htmlFor="email" className="font-medium text-gray-900">Email ID</label>
         <div className="relative mb-3 rounded-md shadow-sm">
         <div className="rounded-l-md p-3 bg-zinc-300 absolute">
           <EmailSvg />
@@ -80,7 +80,7 @@ export default function(props) {
       </div>
     
       {/* Password  */}
-      <label htmlFor="password" className="mt-6 font-medium text-gray-700">Password</label>
+      <label htmlFor="password" className="mt-6 font-medium text-gray-900">Password</label>
         <div className="relative mb-3 rounded-md shadow-sm">
         <div className="rounded-l-md p-3 bg-zinc-300 absolute">
           <PassSvg />
@@ -92,7 +92,7 @@ export default function(props) {
       </div>
     
         {/* Confirm Password  */}
-        <label htmlFor="password2" className="mt-6 font-medium text-gray-700">Confirm Password</label>
+        <label htmlFor="password2" className="mt-6 font-medium text-gray-900">Confirm Password</label>
         <div className="relative mb-3 rounded-md shadow-sm">
         <div className="rounded-l-md p-3 bg-zinc-300 absolute">
           <PassSvg />
@@ -114,7 +114,7 @@ export default function(props) {
 {/* bottom Content     */}
     <p>Already have an account? 
         <span onClick={(e)=>props.navigate()} 
-          className="ml-2 text-zinc-500 cursor-pointer hover:text-green-600">Login here</span>
+          className="ml-2 text-zinc-300 cursor-pointer hover:text-green-600">Login here</span>
     </p>
       
     
