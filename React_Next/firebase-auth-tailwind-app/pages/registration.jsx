@@ -2,8 +2,7 @@ import { useState } from 'react'
 import {EmailSvg, PassSvg, UserSvg} from './Images'
 import firebaseconfig from '../firebaseconfig'
 import {initializeApp} from 'firebase/app'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 export default function(props) {
   const app = initializeApp(firebaseconfig);
   const auth = getAuth();
@@ -14,9 +13,15 @@ export default function(props) {
 
     createUserWithEmailAndPassword(auth, formData['email'], formData['password'])
     .then((userCredential) => {
-      // Signed in 
+      // Creating Account
       const user = userCredential.user;
       console.log(`success ${JSON.stringify(userCredential)}`)
+      sendEmailVerification(auth.currentUser)
+      .then(() => {
+    // Email verification sent!
+        props.navigate(3);
+        props.setEmail(userCredential.user.email);
+      });
       // ...
     })
     .catch((error) => {
@@ -113,7 +118,7 @@ export default function(props) {
 
 {/* bottom Content     */}
     <p>Already have an account? 
-        <span onClick={(e)=>props.navigate()} 
+        <span onClick={e=>props.navigate(0)} 
           className="ml-2 text-zinc-300 cursor-pointer hover:text-green-600">Login here</span>
     </p>
       

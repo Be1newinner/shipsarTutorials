@@ -6,7 +6,7 @@ export default function(props) {
   const [email, setEmail] = useState("")
 
   return(
-  <div className="flex flex-col justify-center w-full p-4 h-full lg:w-100">
+  <div className="flex flex-col m-3 justify-center w-full p-4 h-full lg:w-100">
 
     <div className='flex items-center gap-x-3 mb-6'>
       <BackSvg onClick={()=>props.navigate(0)}/>

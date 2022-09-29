@@ -4,8 +4,11 @@ import {initializeApp} from 'firebase/app'
 // import { getDatabase, ref, set } from "firebase/database";
 import firebaseconfig from '../firebaseconfig'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from 'next/router';
 
 export default function(props) {
+  const router = useRouter();
+
   const [form] = useState({
     email     : "",
     password  : ""
@@ -14,9 +17,19 @@ export default function(props) {
   const auth = getAuth();
 
   function signIn() {
+    
   signInWithEmailAndPassword(auth, form['email'], form['password'])
     .then((userCredential) => {
-      // Signed in 
+      // Signed in
+      if(userCredential.user.emailVerified){
+        console.log("Login Success");
+        router.push('/Dashboard');
+        localStorage.setItem("emailLogin",form['email']);
+        localStorage.setItem("emailUID",userCredential.user.uid);
+      } else {
+        console.log("Email not Verified");
+        props.navigate(3);
+      }
       // const user = userCredential.user;
       console.log(JSON.stringify(userCredential.user));
       // ...
