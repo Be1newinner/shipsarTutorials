@@ -3,9 +3,13 @@ import {EmailSvg, PassSvg, UserSvg} from './Images'
 import firebaseconfig from '../firebaseconfig'
 import {initializeApp} from 'firebase/app'
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+
+
+
 export default function(props) {
   const app = initializeApp(firebaseconfig);
   const auth = getAuth();
+  const [errors,setError] = useState("");
 
   function registerNow(){
 
@@ -25,14 +29,18 @@ export default function(props) {
       // ...
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorMessage)
-      // ..
+      setError(error.message
+        .replaceAll("Firebase:","")
+        .replaceAll("Error","")
+        .replaceAll("(auth/","")
+        .replaceAll("(","")
+        .replaceAll(")","")
+        .replaceAll("-"," ")
+        );
     });
   
     } else {
-      alert("password Invalid");
+      setError("Password do not Match");
     }
   }
 
@@ -116,8 +124,10 @@ export default function(props) {
 
     </div>
 
+    <p className='text-red-400 text-lg'>{errors}</p>
+
 {/* bottom Content     */}
-    <p>Already have an account? 
+    <p>Already have an account?
         <span onClick={e=>props.navigate(0)} 
           className="ml-2 text-zinc-300 cursor-pointer hover:text-green-600">Login here</span>
     </p>

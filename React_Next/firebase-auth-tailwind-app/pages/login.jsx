@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 
 export default function(props) {
   const router = useRouter();
-
+  const [error, setError] = useState('');
   const [form] = useState({
     email     : "",
     password  : ""
@@ -22,20 +22,21 @@ export default function(props) {
     .then((userCredential) => {
       // Signed in
       if(userCredential.user.emailVerified){
-        console.log("Login Success");
         router.push('/Dashboard');
-        localStorage.setItem("emailLogin",form['email']);
-        localStorage.setItem("emailUID",userCredential.user.uid);
       } else {
-        console.log("Email not Verified");
         props.navigate(3);
-      }
-      // const user = userCredential.user;
-      console.log(JSON.stringify(userCredential.user));
-      // ...
-    })
+        setError("Email not Verified");
+        setTimeout(e=>setError(""),5000);
+      }})
     .catch((error) => {
-      console.log(error.message);
+      setError(error.message
+                  .replaceAll("Firebase:","")
+                  .replaceAll("Error","")
+                  .replaceAll("(auth/","")
+                  .replaceAll("(","")
+                  .replaceAll(")","")
+                  .replaceAll("-"," ")
+                  );
     });
   }
 
@@ -85,8 +86,11 @@ return(
       </div>
     </div>
     
+
+
       <div className="mt-5" >
-      
+      <p className='text-red-400 text-lg'>{error}</p>
+
       <p className="cursor-pointer text-zinc-300 hover:text-green-600"  
         onClick={(e)=>{
           props.navigate(2); 

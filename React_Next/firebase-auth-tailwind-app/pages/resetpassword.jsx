@@ -1,9 +1,31 @@
 import { useState } from 'react'
 import {BackSvg, EmailSvg} from './Images'
+import {initializeApp} from 'firebase/app'
+import firebaseconfig from '../firebaseconfig'
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 export default function(props) {
 
+  const app = initializeApp(firebaseconfig);
   const [email, setEmail] = useState("")
+  const auth = getAuth();
+  const [error,setError] = useState("");
+
+  function resetPassword(e){
+    e.preventDefault();
+    sendPasswordResetEmail(auth,email).then(()=>{
+        setError("Password Reset Mail Sent");
+    }).catch(error=>{
+      setError(error.message
+        .replaceAll("Firebase:","")
+        .replaceAll("Error","")
+        .replaceAll("(auth/","")
+        .replaceAll("(","")
+        .replaceAll(")","")
+        .replaceAll("-"," ")
+        );
+    })
+  }
 
   return(
   <div className="flex flex-col m-3 justify-center w-full p-4 h-full lg:w-100">
@@ -15,7 +37,7 @@ export default function(props) {
 
   <h5 className="text-medium font-semibold mb-3 ">Reset Password </h5>
 
-    <form className="mb-3" >
+    <form onSubmit={e=>resetPassword(e)} className="mb-3" >
 
       {/* email */}
       <label htmlFor="email" className="font-medium text-gray-900">Email ID</label>
@@ -33,10 +55,13 @@ export default function(props) {
 
       {/* Submit button */}
       <div className="pt-1 mb-4">
-        <button className="bg-green-600 px-5 py-1.5 rounded-lg cursor-pointer hover:bg-green-700">Reset Password</button>
+        <button className="bg-green-600 px-5 py-1.5 rounded-lg cursor-pointer hover:bg-green-700" 
+        >Reset Password</button>
       </div>
 
     </form>
+
+      <p className='text-green-400 text-lg'>{error}</p>
 
       <p>Reset Password link will be sent to your email ID. <br/> Check your Spam folder, also.</p>
 

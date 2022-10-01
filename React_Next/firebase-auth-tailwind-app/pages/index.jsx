@@ -1,12 +1,25 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Registration from './registration'
 import Login from './login'
 import ResetPassword from './resetpassword'
 import BabyBg from "./Images"
 import VerifiyMail from "./VerifiyMail"
 import {initializeApp} from 'firebase/app'
+import firebaseconfig from '../firebaseconfig'
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useRouter } from 'next/router';
 
 export default function() {
+const app = initializeApp(firebaseconfig);
+const auth = getAuth();
+const router = useRouter();
+
+useEffect(()=>onAuthStateChanged(auth, (user) => {
+if(user){
+  user.emailVerified & router.push('/Dashboard')
+} 
+}),[]);
+
 const [pageState,setPageState] = useState(0)
 const [emailVerified, setEmailVerified] = useState(""); 
 return(

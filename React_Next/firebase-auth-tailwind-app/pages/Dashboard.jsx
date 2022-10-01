@@ -1,16 +1,17 @@
 import {initializeApp} from 'firebase/app'
 import firebaseconfig from '../firebaseconfig'
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function(props){
   const app = initializeApp(firebaseconfig);
   const auth = getAuth();
-  // localStorage.getItem("emailLogin");
+  const router = useRouter();
 
-  useEffect(e=>{
-    console.log(localStorage.getItem("emailLogin"));
-  })
+  useEffect(()=>onAuthStateChanged(auth, (user) => { 
+    if(!user) router.push('/')
+  }),[]);
 
     return(<div className="  flex justify-center items-center">
         <div className="p-10 w-11/12 sm:w-120 lg:w-auto w-full shadow-xl rounded-xl text-center backdrop-blur-sm text-xl font-bold" style={{background:'rgba(250, 250, 250, 0.6)'}}>
@@ -19,7 +20,7 @@ export default function(props){
         <br />
         <div className="pt-1 mb-4">
         <button onClick={e=>{
-          signOut(auth).then(()=>{});
+          signOut(auth).then(()=>{}); 
           localStorage.setItem("emailLogin","");
           localStorage.setItem("emailUID","");
         }} 
